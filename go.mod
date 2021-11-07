@@ -40,6 +40,7 @@ require (
 	github.com/swaggo/echo-swagger v1.1.4 // indirect
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2 // indirect
 	github.com/swaggo/swag v1.7.4 // indirect
+	github.com/thinkeridea/go-extend v1.3.2 // indirect
 	github.com/urfave/cli v1.22.5 // indirect
 	github.com/urfave/cli/v2 v2.3.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

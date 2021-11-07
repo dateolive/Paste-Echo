@@ -2,6 +2,7 @@ package router
 
 import (
 	"Paste-Echo/app/controller"
+	"Paste-Echo/app/middleware"
 	_ "Paste-Echo/docs"
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
@@ -21,30 +22,28 @@ import (
 
 // @host petstore.swagger.io
 // @BasePath /v2
-func Run(e *echo.Echo){
-
-
+func Run(e *echo.Echo) {
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
-	api:=e.Group("/api")
+	api := e.Group("/api")
 
-	v1:=api.Group("/v1")
+	v1 := api.Group("/v1")
 
-	v1.GET("/",controller.Index)
+	v1.GET("/", controller.Index)
 
-	v1.POST("/login",controller.Login)
+	v1.POST("/login", controller.Login)
 
-	v1.GET("/user/:userid",controller.GetUserByUserId)
+	v1.GET("/user/:userid", controller.GetUserByUserId)
 
-	v1.POST("/createUser",controller.CreateUser)
+	v1.POST("/createUser", controller.CreateUser)
 
-	v1.POST("/paste/expire",controller.CreateExpirePaste)
+	v1.POST("/paste/expire", controller.CreateExpirePaste, middleware.RobotRestrict)
 
-	v1.GET("/paste/expire/:key",controller.GetExpirePasteByKey)
+	v1.POST("/paste", controller.CreateForeverPaste, middleware.RobotRestrict)
 
-	v1.POST("/paste",controller.CreateForeverPaste)
+	v1.GET("/paste/expire/:key", controller.GetExpirePasteByKey)
 
-	v1.GET("/paste/:key",controller.GetLongTimePasteByKey)
+	v1.GET("/paste/:key", controller.GetLongTimePasteByKey)
 
 }

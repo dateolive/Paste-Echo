@@ -15,6 +15,10 @@ var (
 	ErrInvalidKeyLength               = New(http.StatusBadRequest, 9, "invalid key length")
 	ErrInvalidKeyFormat               = New(http.StatusBadRequest, 10, "invalid key format")
 
+	ErrFrequentRequest = New(http.StatusTooManyRequests, 1, "frequent request")
+
+	ErrDeserialization = New(http.StatusInternalServerError, 1, "deserialization error")
+
 	ErrUnauthorized = New(http.StatusUnauthorized, 1, "unauthorized")
 
 	ErrWrongPassword = New(http.StatusForbidden, 1, "wrong password")
@@ -26,7 +30,6 @@ var (
 	ErrSaveFailed    = New(http.StatusInternalServerError, 2, "save failed")
 )
 
-
 type ErrorResponse struct {
 	*Response
 	Message string `json:"message" example:"ok"`
@@ -36,14 +39,14 @@ func (response *ErrorResponse) Error() string {
 	return response.Message
 }
 
-func (req *ErrorResponse)Abort(ctx echo.Context)error{
-	return ctx.JSONPretty(req.GetHttpStatusCode(),req," ")
+func (req *ErrorResponse) Abort(ctx echo.Context) error {
+	return ctx.JSONPretty(req.GetHttpStatusCode(), req, " ")
 }
 
-func New(code int,index int,message string) *ErrorResponse {
+func New(code int, index int, message string) *ErrorResponse {
 	return &ErrorResponse{
-		Response:&Response{
-			Code: code*100+index,
+		Response: &Response{
+			Code: code*100 + index,
 		},
 		Message: message,
 	}
